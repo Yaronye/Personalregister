@@ -1,4 +1,10 @@
-﻿namespace Personalregister
+﻿using System;
+using System.IO;
+using System.Runtime.ConstrainedExecution;
+using System.Runtime.InteropServices;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace Personalregister
 {
     /*utveckla personalregister med följande krav:
     1. Registret ska kunna ta emot och lagra anställda med namn och lön (inmatning i konsolen, inget krav på persistent lagring)
@@ -6,6 +12,7 @@
     
      Initiella tankar:
     skapa txt fil där all info läses från/ skrivs till
+    model view controller?
     
      U1: Vilka klasser bör ingå i programmet?
     S1: en klass för anställda
@@ -19,45 +26,98 @@
 
     public class Employee(string name, int pay)
     {
-        int pay = pay;
-        string name = name;
+        int pay;
+        string name;
+        Employee myObj;
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Enter the employees name");
-            string varName = Console.ReadLine();
-            Console.WriteLine("Enter the employees monthly pay");
-            string strPay = Console.ReadLine();
             int varPay = 0;
+            bool escape = false;
+            var EmployeeList = new List<Employee>();
+            /*do you want to: 
+             * 1.add a new employee or 
+             * 2. print? */
+
+
+            while (!escape)
+            {
+                Console.WriteLine("What do you want to do?\n A. Add a new employee\n B. Print register\n C. Exit\n");
+                string answer = Console.ReadLine();
+                if(answer == "a" || answer == "A")
+                {
+                    string varName = newName();
+                    string strPay = newPay();
+                    varPay = convertPay(strPay);
+
+                    Console.WriteLine("Add a new employee to the register with the name: {0} and monthly pay of: {1} ? Y/N", varName, strPay);
+                    answer = Console.ReadLine();
+                    if(answer == "Y" || answer == "y")
+                    {
+                        EmployeeList.Add(new Employee(varName, varPay));
+                        Console.WriteLine("Employee has been added to the register.");
+
+                    }
+                    else if(answer == "N" || answer == "n")
+                    {
+                        Console.WriteLine("Understood, no changes were made to the register.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please answer using 'Y' or 'N'. ");
+                    }
+
+                }
+                else if(answer == "b" || answer == "B")
+                {
+                    printRegistry;
+                }
+                else if (answer == "c" || answer == "C")
+                {
+                    escape = true;
+                }
+                else
+                {
+                    Console.WriteLine("Please answer using 'A', 'B' or 'C'. ");
+                }
+            }   
+
+        }
+        public static string newName()
+        {
+            Console.WriteLine("Enter the employees name");
+            return Console.ReadLine();
+        }
+
+        public static string newPay()
+        {
+            Console.WriteLine("Enter the employees monthly pay");
+            return Console.ReadLine();
+        }
+
+        public static int convertPay(string strPay)
+        {
 
             try
             {
-                varPay = Int32.Parse(strPay);
+                return Int32.Parse(strPay);
 
             }
             catch (FormatException)
             {
-                Console.WriteLine($"Unable to parse '{strPay}'");
+                Console.WriteLine($"Unable to parse '{strPay}', pay set to 0");
             }
-
-            Console.WriteLine("Add a new employee to the register with the name: {0} and monthly pay of: {1} ? Y/N", varName, strPay);
-            string text = Console.ReadLine();
-
-            if(text == "Y" || text == "y")
-            {
-                Employee myObj = new Employee(varName, varPay);
-                Console.WriteLine("Employee {0} has been added to the register.", myObj.name); 
-            }
-            else if(text == "N" || text == "n")
-            {
-                Console.WriteLine("Understood, no changes were made to the register.");
-            }
-            else
-            {
-                Console.WriteLine("Please answer using 'Y' or 'N'. ");
-            }
-
+            return 0;
         }
-        
+
+        public static void printRegistry()
+        {
+            foreach(Employee obj in EmployeeList)
+            {
+                string name = obj.name;
+                object pay = obj.pay;
+                Console.WriteLine("{0} earns {1}kr", name, pay);
+            }
+        }
     }
 }
