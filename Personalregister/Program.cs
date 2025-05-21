@@ -70,10 +70,16 @@ namespace Personalregister
                 }
                 else if(answer == "b" || answer == "B")
                 {
-                    printRegistry;
+                    foreach (var Employee in EmployeeList)
+                    {
+                        string name = Employee.name;
+                        object pay = Employee.pay;
+                        Console.WriteLine("{0} earns {1}kr", name, pay);
+                    }
                 }
                 else if (answer == "c" || answer == "C")
                 {
+                    Console.WriteLine("Exiting program");
                     escape = true;
                 }
                 else
@@ -81,7 +87,6 @@ namespace Personalregister
                     Console.WriteLine("Please answer using 'A', 'B' or 'C'. ");
                 }
             }   
-
         }
         public static string newName()
         {
@@ -97,7 +102,6 @@ namespace Personalregister
 
         public static int convertPay(string strPay)
         {
-
             try
             {
                 return Int32.Parse(strPay);
@@ -108,16 +112,6 @@ namespace Personalregister
                 Console.WriteLine($"Unable to parse '{strPay}', pay set to 0");
             }
             return 0;
-        }
-
-        public static void printRegistry()
-        {
-            foreach(Employee obj in EmployeeList)
-            {
-                string name = obj.name;
-                object pay = obj.pay;
-                Console.WriteLine("{0} earns {1}kr", name, pay);
-            }
         }
     }
 }
