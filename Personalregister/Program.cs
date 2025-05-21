@@ -46,8 +46,7 @@
             if(text == "Y" || text == "y")
             {
                 Employee myObj = new Employee(varName, varPay);
-                Console.WriteLine("Employee {0} has been added to the register.", myObj.name);
-                string docPath = 
+                Console.WriteLine("Employee {0} has been added to the register.", myObj.name); 
             }
             else if(text == "N" || text == "n")
             {
